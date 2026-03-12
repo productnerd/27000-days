@@ -57,7 +57,7 @@ const DobForm: React.FC<DobFormProps> = ({ onSubmit, initialDob }) => {
 			</button>
 
 			{open && (
-				<div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-[100] bg-[hsl(28,15%,15%)] border border-border rounded-lg p-3 shadow-2xl min-w-[220px]">
+				<div className="absolute top-full left-0 mt-2 z-[100] bg-[hsl(28,15%,15%)] border border-border rounded-lg p-3 shadow-2xl min-w-[220px]">
 					<div className="grid grid-cols-6 gap-1 mb-2">
 						{MONTHS.map((m, i) => {
 							const disabled = year === currentYear && i > currentMonth;
