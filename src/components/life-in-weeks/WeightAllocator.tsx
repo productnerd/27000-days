@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 
+// Only stats that compete for time are allocatable
 const STAT_KEYS = [
 	{ key: "skills", emoji: "🎯", label: "Skills" },
 	{ key: "books", emoji: "📚", label: "Books" },
@@ -11,9 +12,6 @@ const STAT_KEYS = [
 	{ key: "recipes", emoji: "👨‍🍳", label: "Recipes" },
 	{ key: "roadtrips", emoji: "🛣️", label: "Road trips" },
 	{ key: "friendships", emoji: "👋", label: "Friendships" },
-	{ key: "sunsets", emoji: "🌅", label: "Sunsets" },
-	{ key: "hugs", emoji: "🤗", label: "Hugs" },
-	{ key: "sundays", emoji: "☕", label: "Sundays" },
 ];
 
 interface WeightAllocatorProps {

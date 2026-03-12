@@ -50,8 +50,11 @@ const BentoStats: React.FC<BentoStatsProps> = ({
 		{ key: "sundays", emoji: "☕", label: "chill Sundays", baseValue: remainingWeeks, unit: "1 per week", tooltip: `${remainingWeeks.toLocaleString()} weeks` },
 	];
 
-	const totalWeights = Object.values(weights).reduce((s, w) => s + w, 0);
-	const equalWeight = totalWeights / statDefs.length;
+	// Only allocatable stats use weights; sunsets/hugs/sundays always use base value
+	const NON_WEIGHTED = new Set(["sunsets", "hugs", "sundays"]);
+	const allocatableStats = statDefs.filter((s) => !NON_WEIGHTED.has(s.key));
+	const totalWeights = allocatableStats.reduce((s, stat) => s + (weights[stat.key] ?? 0), 0);
+	const equalWeight = totalWeights / allocatableStats.length;
 
 	return (
 		<div className="flex flex-col gap-2 h-full overflow-y-auto pr-1 scrollbar-thin">
@@ -67,11 +70,12 @@ const BentoStats: React.FC<BentoStatsProps> = ({
 			{/* Bento grid */}
 			<div className="grid grid-cols-2 gap-1.5">
 				{statDefs.map((stat) => {
-					const w = weights[stat.key] ?? equalWeight;
-					const scale = w / equalWeight;
+					const isNonWeighted = NON_WEIGHTED.has(stat.key);
+					const w = isNonWeighted ? equalWeight : (weights[stat.key] ?? equalWeight);
+					const scale = isNonWeighted ? 1 : (w / equalWeight);
 					const value = Math.floor(stat.baseValue * scale);
 					const isHovered = hoveredKey === stat.key;
-					const isDimmed = scale < 0.1;
+					const isDimmed = !isNonWeighted && scale < 0.1;
 
 					return (
 						<div

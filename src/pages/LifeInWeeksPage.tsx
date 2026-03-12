@@ -7,10 +7,10 @@ const STORAGE_KEY = "life-in-weeks-dob";
 const WEIGHTS_KEY = "life-in-weeks-weights";
 const DEFAULT_DOB_YM = "1980-01";
 
+// Only stats that compete for time are allocatable
 const STAT_KEYS = [
 	"skills", "books", "countries", "languages", "instruments",
 	"careers", "hobbies", "recipes", "roadtrips", "friendships",
-	"sunsets", "hugs", "sundays",
 ];
 
 function getDefaultWeights(): Record<string, number> {
