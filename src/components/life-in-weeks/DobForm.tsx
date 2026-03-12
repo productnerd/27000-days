@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/interactive/button";
+import React, { useState, useRef, useEffect } from "react";
 
 interface DobFormProps {
 	onSubmit: (dob: Date) => void;
@@ -16,7 +15,7 @@ const currentMonth = new Date().getMonth();
 const YEARS = Array.from({ length: 100 }, (_, i) => currentYear - i);
 
 const DEFAULT_YEAR = 1980;
-const DEFAULT_MONTH = 0; // January
+const DEFAULT_MONTH = 0;
 
 function parseInitialDob(dob?: string) {
 	if (!dob) return { year: DEFAULT_YEAR, month: DEFAULT_MONTH };
@@ -28,68 +27,69 @@ const DobForm: React.FC<DobFormProps> = ({ onSubmit, initialDob }) => {
 	const initial = parseInitialDob(initialDob);
 	const [year, setYear] = useState(initial.year);
 	const [month, setMonth] = useState(initial.month);
+	const [open, setOpen] = useState(false);
+	const ref = useRef<HTMLDivElement>(null);
 
-	const handleSubmit = () => {
-		const date = new Date(year, month, 1);
-		if (date > new Date()) return;
-		onSubmit(date);
+	useEffect(() => {
+		const handleClick = (e: MouseEvent) => {
+			if (ref.current && !ref.current.contains(e.target as Node)) {
+				setOpen(false);
+			}
+		};
+		if (open) document.addEventListener("mousedown", handleClick);
+		return () => document.removeEventListener("mousedown", handleClick);
+	}, [open]);
+
+	const update = (newMonth: number, newYear: number) => {
+		const clamped = newYear === currentYear && newMonth > currentMonth ? currentMonth : newMonth;
+		setMonth(clamped);
+		setYear(newYear);
+		onSubmit(new Date(newYear, clamped, 1));
 	};
 
-	const isCurrentYear = year === currentYear;
-
 	return (
-		<div className="flex flex-col items-center gap-4">
-			<div className="flex items-center gap-3">
-				<label className="text-sm text-muted-foreground whitespace-nowrap">
-					Born
-				</label>
+		<div ref={ref} className="relative inline-block">
+			<button
+				onClick={() => setOpen(!open)}
+				className="text-xs text-muted-foreground hover:text-foreground transition-colors border-b border-dashed border-muted-foreground/30 hover:border-foreground/50 pb-0.5"
+			>
+				Born {MONTHS[month]} {year}
+			</button>
 
-				{/* Month picker */}
-				<div className="grid grid-cols-6 gap-1">
-					{MONTHS.map((m, i) => {
-						const disabled = isCurrentYear && i > currentMonth;
-						return (
-							<button
-								key={m}
-								disabled={disabled}
-								onClick={() => setMonth(i)}
-								className={`px-2 py-1 text-xs rounded-md transition-colors ${
-									i === month
-										? "bg-primary text-primary-foreground"
-										: disabled
-										? "text-muted-foreground/30 cursor-not-allowed"
-										: "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
-								}`}
-							>
-								{m}
-							</button>
-						);
-					})}
+			{open && (
+				<div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 z-[100] bg-[hsl(28,15%,15%)] border border-border rounded-lg p-3 shadow-2xl min-w-[220px]">
+					<div className="grid grid-cols-6 gap-1 mb-2">
+						{MONTHS.map((m, i) => {
+							const disabled = year === currentYear && i > currentMonth;
+							return (
+								<button
+									key={m}
+									disabled={disabled}
+									onClick={() => update(i, year)}
+									className={`px-2 py-1 text-xs rounded-md transition-colors ${
+										i === month
+											? "bg-primary text-primary-foreground"
+											: disabled
+											? "text-muted-foreground/30 cursor-not-allowed"
+											: "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+									}`}
+								>
+									{m}
+								</button>
+							);
+						})}
+					</div>
+					<select
+						value={year}
+						onChange={(e) => update(month, Number(e.target.value))}
+						className="w-full h-7 rounded-md border border-input bg-background px-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+					>
+						{YEARS.map((y) => (
+							<option key={y} value={y}>{y}</option>
+						))}
+					</select>
 				</div>
-			</div>
-
-			<div className="flex items-center gap-3">
-				{/* Year scroller */}
-				<select
-					value={year}
-					onChange={(e) => {
-						const y = Number(e.target.value);
-						setYear(y);
-						if (y === currentYear && month > currentMonth) setMonth(currentMonth);
-					}}
-					className="h-8 rounded-md border border-input bg-background px-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
-				>
-					{YEARS.map((y) => (
-						<option key={y} value={y}>
-							{y}
-						</option>
-					))}
-				</select>
-
-				<Button onClick={handleSubmit} size="sm" className="h-8">
-					Visualize My Life
-				</Button>
-			</div>
+			)}
 		</div>
 	);
 };

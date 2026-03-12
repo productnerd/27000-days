@@ -25,9 +25,9 @@ const LifeInWeeksPage: React.FC = () => {
 	const storedYm = localStorage.getItem(STORAGE_KEY) || DEFAULT_DOB_YM;
 
 	return (
-		<div className="h-screen flex flex-col overflow-hidden p-3 gap-1">
+		<div className="h-screen flex flex-col p-3 gap-1">
 			{/* Header */}
-			<div className="flex flex-col items-center gap-1 shrink-0">
+			<div className="flex flex-col items-center gap-1 shrink-0 relative z-50">
 				<h2 className="text-base font-bold text-foreground text-center">
 					Your Life in Weeks
 				</h2>
@@ -47,7 +47,9 @@ const LifeInWeeksPage: React.FC = () => {
 			</div>
 
 			{/* Main content */}
-			<LifeInWeeksView dob={dob} showPhases={showPhases} showUsefulTime={showUsefulTime} />
+			<div className="flex-1 min-h-0 overflow-hidden">
+				<LifeInWeeksView dob={dob} showPhases={showPhases} showUsefulTime={showUsefulTime} />
+			</div>
 		</div>
 	);
 };
