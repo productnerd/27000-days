@@ -25,7 +25,7 @@ const LifeInWeeksPage: React.FC = () => {
 	const storedYm = localStorage.getItem(STORAGE_KEY) || DEFAULT_DOB_YM;
 
 	return (
-		<div className="h-screen flex flex-col p-3 gap-1">
+		<div className="h-screen flex flex-col justify-center p-3 gap-1">
 			{/* Header */}
 			<div className="flex items-center gap-4 flex-wrap justify-center shrink-0 relative z-50 py-1">
 				<div className="flex items-center gap-4 flex-wrap justify-center">
@@ -49,7 +49,7 @@ const LifeInWeeksPage: React.FC = () => {
 			</div>
 
 			{/* Handwritten note */}
-			<p className="text-[10px] italic text-muted-foreground/40 text-right pr-4 shrink-0" style={{ fontFamily: "'Caveat', cursive" }}>
+			<p className="text-[20px] italic text-muted-foreground/40 text-right pr-4 shrink-0" style={{ fontFamily: "'Caveat', cursive" }}>
 				Kind reminder: live now. There is so much to be experienced!
 			</p>
 		</div>

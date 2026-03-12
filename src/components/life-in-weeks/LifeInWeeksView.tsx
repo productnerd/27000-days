@@ -71,8 +71,9 @@ const LifeInWeeksView: React.FC<LifeInWeeksViewProps> = ({ dob, showPhases, show
 
 			{/* Summary Stats — centered under grid only */}
 			{showUsefulTime && (
-				<div className="flex justify-center">
-					<div style={{ width: gridColWidth }} className="shrink-0">
+				<div className="flex gap-4 justify-center items-start">
+					<div style={{ width: 16 }} className="shrink-0" />
+					<div style={{ width: gridWidth }} className="shrink-0">
 						<SummaryStats
 							remainingWeeks={data.remainingWeeks}
 							activityBreakdown={data.activityBreakdown}
@@ -82,6 +83,7 @@ const LifeInWeeksView: React.FC<LifeInWeeksViewProps> = ({ dob, showPhases, show
 							remainingYears={data.remainingYears}
 						/>
 					</div>
+					<div className="shrink-0" style={{ width: LEGEND_WIDTH }} />
 				</div>
 			)}
 		</div>
