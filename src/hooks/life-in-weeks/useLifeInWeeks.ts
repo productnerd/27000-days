@@ -70,7 +70,7 @@ export const ACTIVITY_COLORS: Record<ActivityType, string> = {
 	sleep: "#4338CA",
 	commute: "#DC2626",
 	admin: "#D97706",
-	job: "#6366F1",
+	job: "#0EA5E9",
 	free: "#FFFFFF",
 };
 

@@ -96,6 +96,8 @@ const BentoStats: React.FC<BentoStatsProps> = ({
 						<div
 							key={stat.key}
 							className={`relative rounded-lg px-3 py-2.5 cursor-default transition-all duration-150 ${
+								stat.key === "money" ? "col-span-2" : ""
+							} ${
 								isDimmed
 									? "opacity-30 bg-white/[0.02]"
 									: "bg-white/[0.04] hover:bg-white/[0.08]"
