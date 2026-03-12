@@ -186,12 +186,13 @@ export function useLifeInWeeks(
 						box.color = "#FFFFFF";
 					}
 				} else if (showUsefulTime) {
-					if (hasPhaseColor) {
-						// Childhood / retirement greyed out in useful-time-only mode
+					if (box.lifeStage === "early-years" || box.lifeStage === "education") {
+						// Childhood greyed out in useful-time-only mode
 						box.color = PAST_COLOR;
 					} else if (activity && activity !== "free") {
 						box.color = ACTIVITY_COLORS[activity];
 					} else {
+						// Free time — includes retirement when phases are off
 						box.color = "#FFFFFF";
 					}
 				} else {
