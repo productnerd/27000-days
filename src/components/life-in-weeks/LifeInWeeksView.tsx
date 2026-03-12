@@ -9,6 +9,8 @@ interface LifeInWeeksViewProps {
 	dob: Date;
 	showPhases: boolean;
 	showUsefulTime: boolean;
+	showJob: boolean;
+	salary: number;
 	weights: Record<string, number>;
 	onWeightsChange: (weights: Record<string, number>) => void;
 }
@@ -27,10 +29,12 @@ const LifeInWeeksView: React.FC<LifeInWeeksViewProps> = ({
 	dob,
 	showPhases,
 	showUsefulTime,
+	showJob,
+	salary,
 	weights,
 	onWeightsChange,
 }) => {
-	const data = useLifeInWeeks(dob, showPhases, showUsefulTime);
+	const data = useLifeInWeeks(dob, showPhases, showUsefulTime, showJob, salary);
 
 	const { boxSize, gridHeight, gridWidth } = useMemo(() => {
 		const vh = window.innerHeight;
@@ -84,7 +88,10 @@ const LifeInWeeksView: React.FC<LifeInWeeksViewProps> = ({
 						freeRemainingDays={data.freeRemainingDays}
 						totalFreeHoursWithRetirement={data.totalFreeHoursWithRetirement}
 						remainingYears={data.remainingYears}
+						totalEarningsPotential={data.totalEarningsPotential}
+						workingYearsRemaining={data.workingYearsRemaining}
 						weights={weights}
+						showJob={showJob}
 					/>
 				</div>
 			</div>
@@ -93,7 +100,7 @@ const LifeInWeeksView: React.FC<LifeInWeeksViewProps> = ({
 			<div className="flex gap-3 justify-center shrink-0">
 				<div style={{ width: "16px" }} className="shrink-0" />
 				<div style={{ width: gridWidth }} className="flex justify-center">
-					<Legend showPhases={showPhases} showUsefulTime={showUsefulTime} />
+					<Legend showPhases={showPhases} showUsefulTime={showUsefulTime} showJob={showJob} />
 				</div>
 				<div style={{ width: BENTO_WIDTH }} className="shrink-0" />
 			</div>

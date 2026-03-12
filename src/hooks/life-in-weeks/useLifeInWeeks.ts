@@ -5,7 +5,7 @@ export type LifeStage = "early-years" | "education" | "retirement";
 
 export type BoxStatus = "past" | "current" | "future";
 
-export type ActivityType = "sleep" | "commute" | "admin" | "free";
+export type ActivityType = "sleep" | "commute" | "admin" | "job" | "free";
 
 export interface BoxData {
 	index: number;
@@ -21,6 +21,7 @@ export interface ActivityBreakdown {
 	sleep: number;
 	commute: number;
 	admin: number;
+	job: number;
 	free: number;
 }
 
@@ -34,6 +35,8 @@ export interface LifeInWeeksData {
 	freeRemainingHours: number;
 	totalFreeHoursWithRetirement: number;
 	remainingYears: number;
+	totalEarningsPotential: number;
+	workingYearsRemaining: number;
 	boxes: BoxData[];
 }
 
@@ -47,6 +50,7 @@ const HOURS_PER_DAY = {
 	sleep: 7,
 	commute: 1.5,
 	admin: 0.5,
+	job: 8,
 };
 
 function getLifeStage(age: number): LifeStage | null {
@@ -66,6 +70,7 @@ export const ACTIVITY_COLORS: Record<ActivityType, string> = {
 	sleep: "#4338CA",
 	commute: "#DC2626",
 	admin: "#D97706",
+	job: "#6366F1",
 	free: "#FFFFFF",
 };
 
@@ -73,6 +78,7 @@ export const ACTIVITY_EMOJIS: Record<ActivityType, string> = {
 	sleep: "\u{1F634}",
 	commute: "\u{1F697}",
 	admin: "\u{1F4CB}",
+	job: "\u{1F4BC}",
 	free: "\u2728",
 };
 
@@ -94,6 +100,8 @@ export function useLifeInWeeks(
 	dob: Date,
 	showPhases: boolean,
 	showUsefulTime: boolean,
+	showJob: boolean,
+	salary: number,
 ): LifeInWeeksData {
 	return useMemo(() => {
 		const now = new Date();
@@ -122,8 +130,7 @@ export function useLifeInWeeks(
 		}
 
 		// Step 2: Assign activities sequentially to future adult (18-70) boxes
-		// Activities go right after current week: sleep → commute → admin → free
-		// Early years, education, and retirement get NO activities
+		// Activities go right after current week: sleep → commute → admin → [job] → free
 		const adultFutureIndices: number[] = [];
 		for (const box of boxes) {
 			if (box.status === "future" && box.lifeStage === null) {
@@ -135,6 +142,7 @@ export function useLifeInWeeks(
 		const sleepCount = Math.round((n * HOURS_PER_DAY.sleep) / 24);
 		const commuteCount = Math.round((n * HOURS_PER_DAY.commute) / 24);
 		const adminCount = Math.round((n * HOURS_PER_DAY.admin) / 24);
+		const jobCount = showJob ? Math.round((n * HOURS_PER_DAY.job) / 24) : 0;
 
 		const activityMap = new Map<number, ActivityType>();
 		if (showUsefulTime) {
@@ -146,6 +154,8 @@ export function useLifeInWeeks(
 					activityMap.set(idx, "commute");
 				} else if (j < sleepCount + commuteCount + adminCount) {
 					activityMap.set(idx, "admin");
+				} else if (j < sleepCount + commuteCount + adminCount + jobCount) {
+					activityMap.set(idx, "job");
 				} else {
 					activityMap.set(idx, "free");
 				}
@@ -153,7 +163,7 @@ export function useLifeInWeeks(
 		}
 
 		// Step 3: Assign colors
-		let totalSleep = 0, totalCommute = 0, totalAdmin = 0, totalFree = 0;
+		let totalSleep = 0, totalCommute = 0, totalAdmin = 0, totalJob = 0, totalFree = 0;
 
 		for (const box of boxes) {
 			const activity = activityMap.get(box.index);
@@ -203,11 +213,12 @@ export function useLifeInWeeks(
 			if (activity === "sleep") totalSleep++;
 			else if (activity === "commute") totalCommute++;
 			else if (activity === "admin") totalAdmin++;
+			else if (activity === "job") totalJob++;
 			else if (activity === "free") totalFree++;
 		}
 
 		// Free time calculation for adult period (18-70)
-		const freeHoursPerDay = 24 - HOURS_PER_DAY.sleep - HOURS_PER_DAY.commute - HOURS_PER_DAY.admin;
+		const freeHoursPerDay = 24 - HOURS_PER_DAY.sleep - HOURS_PER_DAY.commute - HOURS_PER_DAY.admin - (showJob ? HOURS_PER_DAY.job : 0);
 		const adultFutureDays = n * 7;
 		const freeRemainingDays = adultFutureDays;
 		const freeRemainingHours = Math.round(adultFutureDays * freeHoursPerDay);
@@ -223,6 +234,11 @@ export function useLifeInWeeks(
 
 		const remainingYears = Math.max(0, TOTAL_YEARS - (weeksLived / WEEKS_PER_YEAR));
 
+		// Earnings calculation
+		const currentAge = weeksLived / WEEKS_PER_YEAR;
+		const workingYearsRemaining = Math.max(0, RETIREMENT_AGE - currentAge);
+		const totalEarningsPotential = Math.round(salary * workingYearsRemaining * 0.8);
+
 		return {
 			totalWeeks: TOTAL_WEEKS,
 			weeksLived,
@@ -232,13 +248,16 @@ export function useLifeInWeeks(
 				sleep: totalSleep,
 				commute: totalCommute,
 				admin: totalAdmin,
+				job: totalJob,
 				free: totalFree,
 			},
 			freeRemainingDays,
 			freeRemainingHours,
 			totalFreeHoursWithRetirement,
 			remainingYears,
+			totalEarningsPotential,
+			workingYearsRemaining,
 			boxes,
 		};
-	}, [dob, showPhases, showUsefulTime]);
+	}, [dob, showPhases, showUsefulTime, showJob, salary]);
 }

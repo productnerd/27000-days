@@ -20,7 +20,10 @@ interface BentoStatsProps {
 	freeRemainingDays: number;
 	totalFreeHoursWithRetirement: number;
 	remainingYears: number;
+	totalEarningsPotential: number;
+	workingYearsRemaining: number;
 	weights: Record<string, number>;
+	showJob: boolean;
 }
 
 const BentoStats: React.FC<BentoStatsProps> = ({
@@ -29,7 +32,10 @@ const BentoStats: React.FC<BentoStatsProps> = ({
 	freeRemainingDays,
 	totalFreeHoursWithRetirement,
 	remainingYears,
+	totalEarningsPotential,
+	workingYearsRemaining,
 	weights,
+	showJob,
 }) => {
 	const [hoveredKey, setHoveredKey] = useState<string | null>(null);
 	const hours = totalFreeHoursWithRetirement;
@@ -45,14 +51,15 @@ const BentoStats: React.FC<BentoStatsProps> = ({
 		{ key: "recipes", emoji: "👨‍🍳", label: "recipes to try", baseValue: remainingWeeks, unit: "1 per week", tooltip: `${remainingWeeks.toLocaleString()} weeks` },
 		{ key: "roadtrips", emoji: "🛣️", label: "road trips", baseValue: remainingYears * 2, unit: "2 per year", tooltip: `${Math.round(remainingYears)} yrs × 2` },
 		{ key: "friendships", emoji: "👋", label: "friendships to form", baseValue: remainingYears * 3, unit: "3 per year", tooltip: `${Math.round(remainingYears)} yrs × 3` },
+		{ key: "money", emoji: "💰", label: "money to earn", baseValue: totalEarningsPotential, unit: `€ before 70`, tooltip: `${Math.round(workingYearsRemaining)} yrs × €${Math.round(totalEarningsPotential / Math.max(1, workingYearsRemaining * 0.8)).toLocaleString()} × 80%` },
 		{ key: "coffee", emoji: "☕", label: "hot cups of coffee", baseValue: remainingWeeks * 7, unit: "1 per day", tooltip: `${(remainingWeeks * 7).toLocaleString()} days` },
 		{ key: "sunsets", emoji: "🌅", label: "sunsets to watch", baseValue: remainingWeeks * 7, unit: "1 per day", tooltip: `${(remainingWeeks * 7).toLocaleString()} days` },
 		{ key: "hugs", emoji: "🤗", label: "hugs to give", baseValue: remainingWeeks * 7 * 3, unit: "3 per day", tooltip: `${(remainingWeeks * 7).toLocaleString()} days × 3` },
 		{ key: "sundays", emoji: "🛋️", label: "chill Sundays", baseValue: remainingWeeks, unit: "1 per week", tooltip: `${remainingWeeks.toLocaleString()} weeks` },
 	];
 
-	// Only allocatable stats use weights; sunsets/hugs/sundays always use base value
-	const NON_WEIGHTED = new Set(["coffee", "sunsets", "hugs", "sundays"]);
+	// Only allocatable stats use weights; these always use base value
+	const NON_WEIGHTED = new Set(["coffee", "sunsets", "hugs", "sundays", "money"]);
 	const allocatableStats = statDefs.filter((s) => !NON_WEIGHTED.has(s.key));
 	const totalWeights = allocatableStats.reduce((s, stat) => s + (weights[stat.key] ?? 0), 0);
 	const equalWeight = totalWeights / allocatableStats.length;
@@ -65,6 +72,9 @@ const BentoStats: React.FC<BentoStatsProps> = ({
 					<span>{ACTIVITY_EMOJIS.sleep} <span style={{ color: ACTIVITY_COLORS.sleep }}>{activityBreakdown.sleep.toLocaleString()}</span> wks</span>
 					<span>{ACTIVITY_EMOJIS.commute} <span style={{ color: ACTIVITY_COLORS.commute }}>{activityBreakdown.commute.toLocaleString()}</span> wks</span>
 					<span>{ACTIVITY_EMOJIS.admin} <span style={{ color: ACTIVITY_COLORS.admin }}>{activityBreakdown.admin.toLocaleString()}</span> wks</span>
+					{showJob && (
+						<span>{ACTIVITY_EMOJIS.job} <span style={{ color: ACTIVITY_COLORS.job }}>{activityBreakdown.job.toLocaleString()}</span> wks</span>
+					)}
 				</div>
 				<div className="flex gap-2">
 					<span className="text-white/70 font-medium">{activityBreakdown.free.toLocaleString()} free wks</span>
@@ -96,7 +106,7 @@ const BentoStats: React.FC<BentoStatsProps> = ({
 							<div className="flex items-baseline gap-1.5">
 								<span className="text-sm">{stat.emoji}</span>
 								<span className="text-2xl font-bold text-white leading-none">
-									{value.toLocaleString()}
+									{stat.key === "money" ? `€${value.toLocaleString()}` : value.toLocaleString()}
 								</span>
 							</div>
 							<div className="text-[11px] text-muted-foreground leading-tight mt-1">
@@ -108,7 +118,7 @@ const BentoStats: React.FC<BentoStatsProps> = ({
 								<div className="text-[9px] text-muted-foreground/70 mt-1 border-t border-white/5 pt-1">
 									<span className="text-white/60">{stat.tooltip}</span>
 									<span className="ml-1">· {stat.unit}</span>
-									{Math.abs(scale - 1) > 0.05 && (
+									{!isNonWeighted && Math.abs(scale - 1) > 0.05 && (
 										<span className="text-orange-400 ml-1">· {Math.round(w)}/{Math.round(equalWeight)} pts</span>
 									)}
 								</div>

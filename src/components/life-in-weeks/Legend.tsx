@@ -13,19 +13,29 @@ const LIFE_STAGE_ITEMS: { stage: LifeStage; label: string }[] = [
 	{ stage: "retirement", label: "Retirement" },
 ];
 
-const ACTIVITY_ITEMS: { type: ActivityType; label: string }[] = [
+const BASE_ACTIVITY_ITEMS: { type: ActivityType; label: string }[] = [
 	{ type: "sleep", label: "Sleeping" },
 	{ type: "commute", label: "Commuting" },
 	{ type: "admin", label: "Life Admin" },
-	{ type: "free", label: "Truly Free" },
 ];
+
+const JOB_ITEM: { type: ActivityType; label: string } = { type: "job", label: "Working" };
+
+const FREE_ITEM: { type: ActivityType; label: string } = { type: "free", label: "Truly Free" };
 
 interface LegendProps {
 	showPhases: boolean;
 	showUsefulTime: boolean;
+	showJob: boolean;
 }
 
-const Legend: React.FC<LegendProps> = ({ showPhases, showUsefulTime }) => {
+const Legend: React.FC<LegendProps> = ({ showPhases, showUsefulTime, showJob }) => {
+	const activityItems = [
+		...BASE_ACTIVITY_ITEMS,
+		...(showJob ? [JOB_ITEM] : []),
+		FREE_ITEM,
+	];
+
 	return (
 		<div className="flex flex-col gap-1 items-center text-[10px]">
 			{showPhases && (
@@ -46,7 +56,7 @@ const Legend: React.FC<LegendProps> = ({ showPhases, showUsefulTime }) => {
 			{showUsefulTime && (
 				<div className="flex items-center gap-3 justify-center">
 					<span className="text-[8px] uppercase tracking-wider text-muted-foreground/60 font-semibold">Time</span>
-					{ACTIVITY_ITEMS.map(({ type, label }) => (
+					{activityItems.map(({ type, label }) => (
 						<div key={type} className="flex items-center gap-1">
 							<div
 								className="w-2 h-2 rounded-[1px] shrink-0"
