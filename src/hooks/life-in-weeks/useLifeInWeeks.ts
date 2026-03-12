@@ -211,9 +211,10 @@ export function useLifeInWeeks(
 		const freeRemainingDays = adultFutureDays;
 		const freeRemainingHours = Math.round(adultFutureDays * freeHoursPerDay);
 
-		// Retirement future weeks (all waking hours are free — no commute/admin)
+		// Retirement future weeks up to age 80 (all waking hours are free — no commute/admin)
+		const maxRetirementWeek = 80 * WEEKS_PER_YEAR;
 		const retirementFutureWeeks = boxes.filter(
-			(b) => b.status === "future" && b.lifeStage === "retirement"
+			(b) => b.status === "future" && b.lifeStage === "retirement" && b.index < maxRetirementWeek
 		).length;
 		const retirementFreeHours = retirementFutureWeeks * 7 * (24 - HOURS_PER_DAY.sleep);
 

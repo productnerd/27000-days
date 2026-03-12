@@ -38,6 +38,8 @@ const LifeInWeeksView: React.FC<LifeInWeeksViewProps> = ({ dob, showPhases, show
 		};
 	}, []);
 
+	const gridColWidth = 16 + 16 + gridWidth; // age labels + gap + grid
+
 	return (
 		<div className="flex flex-col flex-1 min-h-0 gap-1">
 			{/* Grid + Legend row */}
@@ -67,17 +69,19 @@ const LifeInWeeksView: React.FC<LifeInWeeksViewProps> = ({ dob, showPhases, show
 				</div>
 			</div>
 
-			{/* Summary Stats */}
+			{/* Summary Stats — centered under grid only */}
 			{showUsefulTime && (
-				<div className="shrink-0">
-					<SummaryStats
-						remainingWeeks={data.remainingWeeks}
-						activityBreakdown={data.activityBreakdown}
-						freeRemainingDays={data.freeRemainingDays}
-						freeRemainingHours={data.freeRemainingHours}
-						totalFreeHoursWithRetirement={data.totalFreeHoursWithRetirement}
-						remainingYears={data.remainingYears}
-					/>
+				<div className="flex justify-center">
+					<div style={{ width: gridColWidth }} className="shrink-0">
+						<SummaryStats
+							remainingWeeks={data.remainingWeeks}
+							activityBreakdown={data.activityBreakdown}
+							freeRemainingDays={data.freeRemainingDays}
+							freeRemainingHours={data.freeRemainingHours}
+							totalFreeHoursWithRetirement={data.totalFreeHoursWithRetirement}
+							remainingYears={data.remainingYears}
+						/>
+					</div>
 				</div>
 			)}
 		</div>

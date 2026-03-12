@@ -66,7 +66,7 @@ const DobForm: React.FC<DobFormProps> = ({ onSubmit, initialDob }) => {
 									key={m}
 									disabled={disabled}
 									onClick={() => update(i, year)}
-									className={`px-2 py-1 text-xs rounded-md transition-colors ${
+									className={`w-8 h-6 text-xs rounded-full text-center transition-colors ${
 										i === month
 											? "bg-primary text-primary-foreground"
 											: disabled
@@ -82,7 +82,8 @@ const DobForm: React.FC<DobFormProps> = ({ onSubmit, initialDob }) => {
 					<select
 						value={year}
 						onChange={(e) => update(month, Number(e.target.value))}
-						className="w-full h-7 rounded-md border border-input bg-background px-2 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
+						className="w-full h-7 rounded-md border border-input bg-background pl-2 pr-6 text-xs text-foreground focus:outline-none focus:ring-1 focus:ring-ring appearance-none"
+						style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239a9a9a' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: "no-repeat", backgroundPosition: "right 8px center" }}
 					>
 						{YEARS.map((y) => (
 							<option key={y} value={y}>{y}</option>

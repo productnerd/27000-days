@@ -27,10 +27,7 @@ const LifeInWeeksPage: React.FC = () => {
 	return (
 		<div className="h-screen flex flex-col p-3 gap-1">
 			{/* Header */}
-			<div className="flex flex-col items-center gap-1 shrink-0 relative z-50">
-				<h2 className="text-base font-bold text-foreground text-center">
-					Your Life in Weeks
-				</h2>
+			<div className="flex items-center gap-4 flex-wrap justify-center shrink-0 relative z-50 py-1">
 				<div className="flex items-center gap-4 flex-wrap justify-center">
 					<DobForm onSubmit={handleDobSubmit} initialDob={storedYm} />
 					<div className="flex items-center gap-3">
@@ -50,6 +47,11 @@ const LifeInWeeksPage: React.FC = () => {
 			<div className="flex-1 min-h-0 overflow-hidden">
 				<LifeInWeeksView dob={dob} showPhases={showPhases} showUsefulTime={showUsefulTime} />
 			</div>
+
+			{/* Handwritten note */}
+			<p className="text-[10px] italic text-muted-foreground/40 text-right pr-4 shrink-0" style={{ fontFamily: "'Caveat', cursive" }}>
+				Kind reminder: live now. There is so much to be experienced!
+			</p>
 		</div>
 	);
 };
