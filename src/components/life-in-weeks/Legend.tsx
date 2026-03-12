@@ -46,10 +46,6 @@ const Legend: React.FC<LegendProps> = ({ showPhases, showUsefulTime }) => {
 			{showUsefulTime && (
 				<div className="flex items-center gap-3 justify-center">
 					<span className="text-[8px] uppercase tracking-wider text-muted-foreground/60 font-semibold">Time</span>
-					<div className="flex items-center gap-1">
-						<div className="w-2 h-2 rounded-[1px] shrink-0 bg-white week-current-legend" />
-						<span className="text-foreground/60">Now</span>
-					</div>
 					{ACTIVITY_ITEMS.map(({ type, label }) => (
 						<div key={type} className="flex items-center gap-1">
 							<div

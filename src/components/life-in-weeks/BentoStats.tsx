@@ -95,7 +95,7 @@ const BentoStats: React.FC<BentoStatsProps> = ({
 						>
 							<div className="flex items-baseline gap-1.5">
 								<span className="text-sm">{stat.emoji}</span>
-								<span className="text-xl font-bold text-white leading-none">
+								<span className="text-2xl font-bold text-white leading-none">
 									{value.toLocaleString()}
 								</span>
 							</div>
