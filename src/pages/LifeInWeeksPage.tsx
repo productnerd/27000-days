@@ -63,19 +63,17 @@ const LifeInWeeksPage: React.FC = () => {
 	return (
 		<div className="h-screen flex flex-col justify-center p-3 gap-1">
 			{/* Header */}
-			<div className="flex items-center gap-4 flex-wrap justify-center shrink-0 relative z-50 py-1">
-				<div className="flex items-center gap-4 flex-wrap justify-center">
-					<DobForm onSubmit={handleDobSubmit} initialDob={storedYm} />
-					<div className="flex items-center gap-3">
-						<label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer">
-							<Switch checked={showPhases} onCheckedChange={setShowPhases} className="scale-75" />
-							Life Phases
-						</label>
-						<label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer">
-							<Switch checked={showUsefulTime} onCheckedChange={setShowUsefulTime} className="scale-75" />
-							Useful Time
-						</label>
-					</div>
+			<div className="flex items-center justify-between shrink-0 relative z-50 py-1 px-1">
+				<DobForm onSubmit={handleDobSubmit} initialDob={storedYm} />
+				<div className="flex items-center gap-3">
+					<label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer">
+						<Switch checked={showPhases} onCheckedChange={setShowPhases} className="scale-75" />
+						Life Phases
+					</label>
+					<label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer">
+						<Switch checked={showUsefulTime} onCheckedChange={setShowUsefulTime} className="scale-75" />
+						Useful Time
+					</label>
 				</div>
 			</div>
 

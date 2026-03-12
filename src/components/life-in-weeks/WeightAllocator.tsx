@@ -103,7 +103,7 @@ const WeightAllocator: React.FC<WeightAllocatorProps> = ({ weights, onChange }) 
 										onChange={(e) => handleSlider(key, parseInt(e.target.value))}
 										className="flex-1 h-1 accent-orange-500 cursor-pointer"
 									/>
-									<span className="text-[10px] text-white/70 w-5 text-right tabular-nums">{Math.round(w)}</span>
+									<span className="text-[10px] text-white/70 w-6 text-right tabular-nums pr-1">{Math.round(w)}</span>
 								</div>
 							);
 						})}

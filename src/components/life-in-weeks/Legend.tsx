@@ -27,9 +27,9 @@ interface LegendProps {
 
 const Legend: React.FC<LegendProps> = ({ showPhases, showUsefulTime }) => {
 	return (
-		<div className="flex items-center gap-3 flex-wrap justify-center text-[10px]">
+		<div className="flex flex-col gap-1 items-center text-[10px]">
 			{showPhases && (
-				<>
+				<div className="flex items-center gap-3 justify-center">
 					<span className="text-[8px] uppercase tracking-wider text-muted-foreground/60 font-semibold">Phases</span>
 					{LIFE_STAGE_ITEMS.map(({ stage, label }) => (
 						<div key={stage} className="flex items-center gap-1">
@@ -40,12 +40,11 @@ const Legend: React.FC<LegendProps> = ({ showPhases, showUsefulTime }) => {
 							<span className="text-foreground/60">{label}</span>
 						</div>
 					))}
-				</>
+				</div>
 			)}
 
 			{showUsefulTime && (
-				<>
-					{showPhases && <span className="text-muted-foreground/30">|</span>}
+				<div className="flex items-center gap-3 justify-center">
 					<span className="text-[8px] uppercase tracking-wider text-muted-foreground/60 font-semibold">Time</span>
 					<div className="flex items-center gap-1">
 						<div className="w-2 h-2 rounded-[1px] shrink-0 bg-white week-current-legend" />
@@ -62,16 +61,16 @@ const Legend: React.FC<LegendProps> = ({ showPhases, showUsefulTime }) => {
 							</span>
 						</div>
 					))}
-				</>
+				</div>
 			)}
 
 			{!showPhases && !showUsefulTime && (
-				<>
+				<div className="flex items-center gap-3 justify-center">
 					<div className="flex items-center gap-1">
 						<div className="w-2 h-2 rounded-[1px] shrink-0 bg-white week-current-legend" />
 						<span className="text-foreground/60">This Week</span>
 					</div>
-				</>
+				</div>
 			)}
 		</div>
 	);

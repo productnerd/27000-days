@@ -59,16 +59,20 @@ const BentoStats: React.FC<BentoStatsProps> = ({
 	return (
 		<div className="flex flex-col gap-2 h-full overflow-y-auto pr-1 scrollbar-thin">
 			{/* Activity summary */}
-			<div className="flex flex-wrap gap-x-2 gap-y-0.5 text-[9px] text-muted-foreground">
-				<span>{ACTIVITY_EMOJIS.sleep} <span style={{ color: ACTIVITY_COLORS.sleep }}>{activityBreakdown.sleep.toLocaleString()}</span> wks</span>
-				<span>{ACTIVITY_EMOJIS.commute} <span style={{ color: ACTIVITY_COLORS.commute }}>{activityBreakdown.commute.toLocaleString()}</span> wks</span>
-				<span>{ACTIVITY_EMOJIS.admin} <span style={{ color: ACTIVITY_COLORS.admin }}>{activityBreakdown.admin.toLocaleString()}</span> wks</span>
-				<span className="text-white/70 font-medium">{activityBreakdown.free.toLocaleString()} free wks</span>
-				<span className="text-white/50">{totalFreeHoursWithRetirement.toLocaleString()} hrs</span>
+			<div className="flex flex-col gap-0.5 text-[9px] text-muted-foreground">
+				<div className="flex flex-wrap gap-x-2">
+					<span>{ACTIVITY_EMOJIS.sleep} <span style={{ color: ACTIVITY_COLORS.sleep }}>{activityBreakdown.sleep.toLocaleString()}</span> wks</span>
+					<span>{ACTIVITY_EMOJIS.commute} <span style={{ color: ACTIVITY_COLORS.commute }}>{activityBreakdown.commute.toLocaleString()}</span> wks</span>
+					<span>{ACTIVITY_EMOJIS.admin} <span style={{ color: ACTIVITY_COLORS.admin }}>{activityBreakdown.admin.toLocaleString()}</span> wks</span>
+				</div>
+				<div className="flex gap-2">
+					<span className="text-white/70 font-medium">{activityBreakdown.free.toLocaleString()} free wks</span>
+					<span className="text-white/50">{totalFreeHoursWithRetirement.toLocaleString()} hrs</span>
+				</div>
 			</div>
 
 			{/* Bento grid */}
-			<div className="grid grid-cols-2 gap-1.5">
+			<div className="grid grid-cols-2 gap-2">
 				{statDefs.map((stat) => {
 					const isNonWeighted = NON_WEIGHTED.has(stat.key);
 					const w = isNonWeighted ? equalWeight : (weights[stat.key] ?? equalWeight);
@@ -80,7 +84,7 @@ const BentoStats: React.FC<BentoStatsProps> = ({
 					return (
 						<div
 							key={stat.key}
-							className={`relative rounded-lg px-2 py-1.5 cursor-default transition-all duration-150 ${
+							className={`relative rounded-lg px-3 py-2.5 cursor-default transition-all duration-150 ${
 								isDimmed
 									? "opacity-30 bg-white/[0.02]"
 									: "bg-white/[0.04] hover:bg-white/[0.08]"
@@ -88,23 +92,23 @@ const BentoStats: React.FC<BentoStatsProps> = ({
 							onMouseEnter={() => setHoveredKey(stat.key)}
 							onMouseLeave={() => setHoveredKey(null)}
 						>
-							<div className="flex items-baseline gap-1">
-								<span className="text-[10px]">{stat.emoji}</span>
-								<span className="text-base font-bold text-white leading-none">
+							<div className="flex items-baseline gap-1.5">
+								<span className="text-sm">{stat.emoji}</span>
+								<span className="text-xl font-bold text-white leading-none">
 									{value.toLocaleString()}
 								</span>
 							</div>
-							<div className="text-[9px] text-muted-foreground leading-tight mt-0.5">
+							<div className="text-[11px] text-muted-foreground leading-tight mt-1">
 								{stat.label}
 							</div>
 
-							{/* Hover tooltip */}
+							{/* Hover explainer — inside the card */}
 							{isHovered && (
-								<div className="absolute z-50 left-0 right-0 -bottom-1 translate-y-full bg-zinc-900 border border-white/10 rounded-md px-2 py-1.5 text-[9px] text-muted-foreground shadow-lg pointer-events-none">
-									<div className="text-white/70 font-medium mb-0.5">{stat.tooltip}</div>
-									<div>{stat.unit}</div>
+								<div className="text-[9px] text-muted-foreground/70 mt-1 border-t border-white/5 pt-1">
+									<span className="text-white/60">{stat.tooltip}</span>
+									<span className="ml-1">· {stat.unit}</span>
 									{Math.abs(scale - 1) > 0.05 && (
-										<div className="text-orange-400 mt-0.5">Weight: {Math.round(w)}/{Math.round(equalWeight)} pts</div>
+										<span className="text-orange-400 ml-1">· {Math.round(w)}/{Math.round(equalWeight)} pts</span>
 									)}
 								</div>
 							)}
