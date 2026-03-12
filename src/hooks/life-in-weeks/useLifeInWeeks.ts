@@ -32,6 +32,8 @@ export interface LifeInWeeksData {
 	activityBreakdown: ActivityBreakdown;
 	freeRemainingDays: number;
 	freeRemainingHours: number;
+	totalFreeHoursWithRetirement: number;
+	remainingYears: number;
 	boxes: BoxData[];
 }
 
@@ -209,6 +211,16 @@ export function useLifeInWeeks(
 		const freeRemainingDays = adultFutureDays;
 		const freeRemainingHours = Math.round(adultFutureDays * freeHoursPerDay);
 
+		// Retirement future weeks (all waking hours are free — no commute/admin)
+		const retirementFutureWeeks = boxes.filter(
+			(b) => b.status === "future" && b.lifeStage === "retirement"
+		).length;
+		const retirementFreeHours = retirementFutureWeeks * 7 * (24 - HOURS_PER_DAY.sleep);
+
+		const totalFreeHoursWithRetirement = freeRemainingHours + retirementFreeHours;
+
+		const remainingYears = Math.max(0, TOTAL_YEARS - (weeksLived / WEEKS_PER_YEAR));
+
 		return {
 			totalWeeks: TOTAL_WEEKS,
 			weeksLived,
@@ -222,6 +234,8 @@ export function useLifeInWeeks(
 			},
 			freeRemainingDays,
 			freeRemainingHours,
+			totalFreeHoursWithRetirement,
+			remainingYears,
 			boxes,
 		};
 	}, [dob, showPhases, showUsefulTime]);

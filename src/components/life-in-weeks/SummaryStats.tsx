@@ -10,6 +10,8 @@ interface SummaryStatsProps {
 	activityBreakdown: ActivityBreakdown;
 	freeRemainingDays: number;
 	freeRemainingHours: number;
+	totalFreeHoursWithRetirement: number;
+	remainingYears: number;
 }
 
 const SummaryStats: React.FC<SummaryStatsProps> = ({
@@ -17,6 +19,8 @@ const SummaryStats: React.FC<SummaryStatsProps> = ({
 	activityBreakdown,
 	freeRemainingDays,
 	freeRemainingHours,
+	totalFreeHoursWithRetirement,
+	remainingYears,
 }) => {
 	const activities = [
 		{
@@ -39,8 +43,12 @@ const SummaryStats: React.FC<SummaryStatsProps> = ({
 		},
 	];
 
+	const skillsToMaster = Math.floor(totalFreeHoursWithRetirement / 10000);
+	const booksToRead = Math.floor(totalFreeHoursWithRetirement / 6);
+	const countriesToVisit = Math.floor(remainingYears * 2);
+
 	return (
-		<div className="flex flex-col items-center gap-0.5">
+		<div className="flex flex-col items-center gap-1">
 			{/* Activity breakdown row */}
 			<div className="flex items-center gap-3 flex-wrap justify-center">
 				{activities.map(({ emoji, label, weeks, color }) => (
@@ -70,13 +78,29 @@ const SummaryStats: React.FC<SummaryStatsProps> = ({
 				<span className="text-muted-foreground/40">|</span>
 				<div>
 					<span className="text-base font-semibold text-white/80">
-						{freeRemainingHours.toLocaleString()}
+						{totalFreeHoursWithRetirement.toLocaleString()}
 					</span>
 					<span className="text-[10px] text-muted-foreground ml-1">hours</span>
 				</div>
-				<span className="text-[10px] text-muted-foreground/50">
-					to spend with people you love, doing things you love
-				</span>
+			</div>
+
+			{/* Fun context stats */}
+			<div className="flex items-center gap-4 flex-wrap justify-center mt-1">
+				<div className="flex items-center gap-1.5 text-xs">
+					<span>🎯</span>
+					<span className="text-white font-medium">{skillsToMaster}</span>
+					<span className="text-muted-foreground">skills to master</span>
+				</div>
+				<div className="flex items-center gap-1.5 text-xs">
+					<span>📚</span>
+					<span className="text-white font-medium">{booksToRead.toLocaleString()}</span>
+					<span className="text-muted-foreground">books to read</span>
+				</div>
+				<div className="flex items-center gap-1.5 text-xs">
+					<span>✈️</span>
+					<span className="text-white font-medium">{countriesToVisit}</span>
+					<span className="text-muted-foreground">countries to visit</span>
+				</div>
 			</div>
 		</div>
 	);

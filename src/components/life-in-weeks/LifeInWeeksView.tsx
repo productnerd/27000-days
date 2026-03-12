@@ -75,6 +75,8 @@ const LifeInWeeksView: React.FC<LifeInWeeksViewProps> = ({ dob, showPhases, show
 						activityBreakdown={data.activityBreakdown}
 						freeRemainingDays={data.freeRemainingDays}
 						freeRemainingHours={data.freeRemainingHours}
+						totalFreeHoursWithRetirement={data.totalFreeHoursWithRetirement}
+						remainingYears={data.remainingYears}
 					/>
 				</div>
 			)}
