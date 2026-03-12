@@ -51,11 +51,11 @@ const BentoStats: React.FC<BentoStatsProps> = ({
 		{ key: "recipes", emoji: "👨‍🍳", label: "recipes to try", baseValue: remainingWeeks, unit: "1 per week", tooltip: `${remainingWeeks.toLocaleString()} weeks` },
 		{ key: "roadtrips", emoji: "🛣️", label: "road trips", baseValue: remainingYears * 2, unit: "2 per year", tooltip: `${Math.round(remainingYears)} yrs × 2` },
 		{ key: "friendships", emoji: "👋", label: "friendships to form", baseValue: remainingYears * 3, unit: "3 per year", tooltip: `${Math.round(remainingYears)} yrs × 3` },
-		{ key: "money", emoji: "💰", label: "money to earn", baseValue: totalEarningsPotential, unit: `€ before 70`, tooltip: `${Math.round(workingYearsRemaining)} yrs × €${Math.round(totalEarningsPotential / Math.max(1, workingYearsRemaining * 0.8)).toLocaleString()} × 80%` },
 		{ key: "coffee", emoji: "☕", label: "hot cups of coffee", baseValue: remainingWeeks * 7, unit: "1 per day", tooltip: `${(remainingWeeks * 7).toLocaleString()} days` },
 		{ key: "sunsets", emoji: "🌅", label: "sunsets to watch", baseValue: remainingWeeks * 7, unit: "1 per day", tooltip: `${(remainingWeeks * 7).toLocaleString()} days` },
 		{ key: "hugs", emoji: "🤗", label: "hugs to give", baseValue: remainingWeeks * 7 * 3, unit: "3 per day", tooltip: `${(remainingWeeks * 7).toLocaleString()} days × 3` },
 		{ key: "sundays", emoji: "🛋️", label: "chill Sundays", baseValue: remainingWeeks, unit: "1 per week", tooltip: `${remainingWeeks.toLocaleString()} weeks` },
+		{ key: "money", emoji: "💰", label: "money to earn", baseValue: totalEarningsPotential, unit: `€ before 70`, tooltip: `${Math.round(workingYearsRemaining)} yrs × €${Math.round(totalEarningsPotential / Math.max(1, workingYearsRemaining * 0.8)).toLocaleString()} × 80%` },
 	];
 
 	// Only allocatable stats use weights; these always use base value
