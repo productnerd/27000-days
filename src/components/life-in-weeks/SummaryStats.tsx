@@ -22,85 +22,45 @@ const SummaryStats: React.FC<SummaryStatsProps> = ({
 	totalFreeHoursWithRetirement,
 	remainingYears,
 }) => {
-	const activities = [
-		{
-			emoji: ACTIVITY_EMOJIS.sleep,
-			label: "Sleeping",
-			weeks: activityBreakdown.sleep,
-			color: ACTIVITY_COLORS.sleep,
-		},
-		{
-			emoji: ACTIVITY_EMOJIS.commute,
-			label: "Commute",
-			weeks: activityBreakdown.commute,
-			color: ACTIVITY_COLORS.commute,
-		},
-		{
-			emoji: ACTIVITY_EMOJIS.admin,
-			label: "Life admin",
-			weeks: activityBreakdown.admin,
-			color: ACTIVITY_COLORS.admin,
-		},
+	const funStats = [
+		{ emoji: "🎯", value: Math.floor(totalFreeHoursWithRetirement / 10000), label: "skills to master" },
+		{ emoji: "📚", value: Math.floor(totalFreeHoursWithRetirement / 6), label: "books to read" },
+		{ emoji: "✈️", value: Math.floor(remainingYears * 2), label: "countries to visit" },
+		{ emoji: "🗣️", value: Math.floor(totalFreeHoursWithRetirement / 1100), label: "languages to learn" },
+		{ emoji: "🎸", value: Math.floor(totalFreeHoursWithRetirement / 2000), label: "instruments to play" },
+		{ emoji: "💼", value: Math.floor(remainingYears / 6), label: "careers to explore" },
+		{ emoji: "🎨", value: Math.floor(remainingYears / 2), label: "hobbies to master" },
+		{ emoji: "👨‍🍳", value: remainingWeeks, label: "recipes to try" },
+		{ emoji: "🛣️", value: Math.floor(remainingYears * 2), label: "road trips" },
+		{ emoji: "👋", value: Math.floor(remainingYears * 3), label: "friendships to form" },
+		{ emoji: "🌅", value: remainingWeeks * 7, label: "sunsets to watch" },
+		{ emoji: "🤗", value: remainingWeeks * 7 * 3, label: "hugs to give" },
+		{ emoji: "☕", value: remainingWeeks, label: "chill Sundays" },
 	];
 
-	const skillsToMaster = Math.floor(totalFreeHoursWithRetirement / 10000);
-	const booksToRead = Math.floor(totalFreeHoursWithRetirement / 6);
-	const countriesToVisit = Math.floor(remainingYears * 2);
-
 	return (
-		<div className="flex flex-col items-center gap-1">
-			{/* Activity breakdown row */}
-			<div className="flex items-center gap-3 flex-wrap justify-center">
-				{activities.map(({ emoji, label, weeks, color }) => (
-					<div key={label} className="flex items-center gap-1 text-xs text-muted-foreground">
-						<span>{emoji}</span>
-						<span style={{ color }}>{weeks.toLocaleString()}</span>
-						<span>wks {label.toLowerCase()}</span>
-					</div>
+		<div className="flex flex-col items-center gap-0.5">
+			{/* Activity breakdown + free time — single compact row */}
+			<div className="flex items-center gap-2 flex-wrap justify-center text-[10px] text-muted-foreground">
+				<span>{ACTIVITY_EMOJIS.sleep} <span style={{ color: ACTIVITY_COLORS.sleep }}>{activityBreakdown.sleep.toLocaleString()}</span> wks sleeping</span>
+				<span>·</span>
+				<span>{ACTIVITY_EMOJIS.commute} <span style={{ color: ACTIVITY_COLORS.commute }}>{activityBreakdown.commute.toLocaleString()}</span> wks commute</span>
+				<span>·</span>
+				<span>{ACTIVITY_EMOJIS.admin} <span style={{ color: ACTIVITY_COLORS.admin }}>{activityBreakdown.admin.toLocaleString()}</span> wks admin</span>
+				<span>·</span>
+				<span className="text-white font-semibold text-sm">{activityBreakdown.free.toLocaleString()}</span> free weeks
+				<span>·</span>
+				<span className="text-white/80 font-medium">{totalFreeHoursWithRetirement.toLocaleString()}</span> hours
+			</div>
+
+			{/* Fun context stats — compact wrapped grid */}
+			<div className="flex items-center gap-x-2.5 gap-y-0 flex-wrap justify-center leading-tight">
+				{funStats.map(({ emoji, value, label }) => (
+					<span key={label} className="text-[10px]">
+						{emoji} <span className="text-white font-medium">{value.toLocaleString()}</span>{" "}
+						<span className="text-muted-foreground">{label}</span>
+					</span>
 				))}
-			</div>
-
-			{/* Free time highlight */}
-			<div className="flex items-center gap-3 text-center">
-				<div>
-					<span className="text-xl font-bold text-white">
-						{activityBreakdown.free.toLocaleString()}
-					</span>
-					<span className="text-[10px] text-muted-foreground ml-1">free weeks</span>
-				</div>
-				<span className="text-muted-foreground/40">|</span>
-				<div>
-					<span className="text-base font-semibold text-white/80">
-						{freeRemainingDays.toLocaleString()}
-					</span>
-					<span className="text-[10px] text-muted-foreground ml-1">days</span>
-				</div>
-				<span className="text-muted-foreground/40">|</span>
-				<div>
-					<span className="text-base font-semibold text-white/80">
-						{totalFreeHoursWithRetirement.toLocaleString()}
-					</span>
-					<span className="text-[10px] text-muted-foreground ml-1">hours</span>
-				</div>
-			</div>
-
-			{/* Fun context stats */}
-			<div className="flex items-center gap-4 flex-wrap justify-center mt-1">
-				<div className="flex items-center gap-1.5 text-xs">
-					<span>🎯</span>
-					<span className="text-white font-medium">{skillsToMaster}</span>
-					<span className="text-muted-foreground">skills to master</span>
-				</div>
-				<div className="flex items-center gap-1.5 text-xs">
-					<span>📚</span>
-					<span className="text-white font-medium">{booksToRead.toLocaleString()}</span>
-					<span className="text-muted-foreground">books to read</span>
-				</div>
-				<div className="flex items-center gap-1.5 text-xs">
-					<span>✈️</span>
-					<span className="text-white font-medium">{countriesToVisit}</span>
-					<span className="text-muted-foreground">countries to visit</span>
-				</div>
 			</div>
 		</div>
 	);

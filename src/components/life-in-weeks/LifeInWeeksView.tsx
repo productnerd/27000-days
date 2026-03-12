@@ -14,7 +14,7 @@ const ROWS = 90;
 const COLS = 52;
 const GAP = 1;
 const HEADER_HEIGHT = 80;
-const STATS_HEIGHT = 80;
+const STATS_HEIGHT = 110;
 const AGE_LABEL_WIDTH = 20;
 const LEGEND_WIDTH = 140;
 const PADDING = 32;
@@ -69,21 +69,17 @@ const LifeInWeeksView: React.FC<LifeInWeeksViewProps> = ({ dob, showPhases, show
 				</div>
 			</div>
 
-			{/* Summary Stats — centered under grid only */}
+			{/* Summary Stats */}
 			{showUsefulTime && (
-				<div className="flex gap-4 justify-center items-start">
-					<div style={{ width: 16 }} className="shrink-0" />
-					<div style={{ width: gridWidth }} className="shrink-0">
-						<SummaryStats
-							remainingWeeks={data.remainingWeeks}
-							activityBreakdown={data.activityBreakdown}
-							freeRemainingDays={data.freeRemainingDays}
-							freeRemainingHours={data.freeRemainingHours}
-							totalFreeHoursWithRetirement={data.totalFreeHoursWithRetirement}
-							remainingYears={data.remainingYears}
-						/>
-					</div>
-					<div className="shrink-0" style={{ width: LEGEND_WIDTH }} />
+				<div style={{ maxWidth: gridWidth + AGE_LABEL_WIDTH + LEGEND_WIDTH + 32 }} className="mx-auto">
+					<SummaryStats
+						remainingWeeks={data.remainingWeeks}
+						activityBreakdown={data.activityBreakdown}
+						freeRemainingDays={data.freeRemainingDays}
+						freeRemainingHours={data.freeRemainingHours}
+						totalFreeHoursWithRetirement={data.totalFreeHoursWithRetirement}
+						remainingYears={data.remainingYears}
+					/>
 				</div>
 			)}
 		</div>
