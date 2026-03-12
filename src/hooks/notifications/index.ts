@@ -1,2 +1,0 @@
-
-export { useNewTopicNotifications } from './useNewTopicNotifications';

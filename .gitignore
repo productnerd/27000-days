@@ -1,5 +1,13 @@
-node_modules
-dist
-.vite
-*.local
-.env
+# Ignore timelapse-bar files
+public/lovable-uploads/
+public/favicon.ico
+src/App.tsx
+src/App.css
+src/assets/
+src/index.tsx
+src/integrations/
+src/contexts/
+src/store/
+src/styles/
+src/types/
+src/utils/

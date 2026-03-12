@@ -1,1 +1,0 @@
-export { useBoundStore } from "./store";
