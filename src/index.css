@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:root {
+		--background: 30 20% 12%;
+		--foreground: 32 40% 98%;
+		--primary: 24 100% 45%;
+		--primary-foreground: 355.7 100% 97.3%;
+		--muted: 28 15% 20%;
+		--muted-foreground: 28 16.3% 70%;
+		--accent: 28 15% 20%;
+		--accent-foreground: 32 40% 98%;
+		--border: 30 5% 26%;
+		--input: 30 5% 26%;
+		--ring: 24 100% 45%;
+		--radius: 1rem;
+	}
+
+	* {
+		@apply border-border;
+	}
+
+	body {
+		@apply bg-background text-foreground;
+		font-family: "Outfit", sans-serif;
+	}
+}
+
+@layer components {
+	@keyframes week-appear {
+		0% {
+			opacity: 0;
+			transform: scale(0);
+		}
+		100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	.week-box {
+		opacity: 0;
+		animation: week-appear 0.2s ease-out forwards;
+	}
+
+	@keyframes pulse-week {
+		0%,
+		100% {
+			box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.9), 0 0 6px 3px rgba(230, 92, 0, 0.6);
+		}
+		50% {
+			box-shadow: 0 0 4px 2px rgba(255, 255, 255, 1), 0 0 10px 5px rgba(230, 92, 0, 0.8);
+		}
+	}
+
+	.week-current {
+		opacity: 0;
+		animation:
+			week-appear 0.2s ease-out forwards,
+			pulse-week 1.2s ease-in-out infinite;
+		z-index: 1;
+		position: relative;
+	}
+
+	.week-current-legend {
+		animation: pulse-week 1.5s ease-in-out infinite;
+	}
+}
