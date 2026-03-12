@@ -1,4 +1,6 @@
-# Ignore timelapse-bar files
+node_modules/
+dist/
+# Ignore everything from timelapse-bar that might leak in
 public/lovable-uploads/
 public/favicon.ico
 src/App.tsx
