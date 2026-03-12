@@ -4,7 +4,37 @@ import LifeInWeeksView from "@/components/life-in-weeks/LifeInWeeksView";
 import { Switch } from "@/components/ui/form/switch";
 
 const STORAGE_KEY = "life-in-weeks-dob";
+const WEIGHTS_KEY = "life-in-weeks-weights";
 const DEFAULT_DOB_YM = "1980-01";
+
+const STAT_KEYS = [
+	"skills", "books", "countries", "languages", "instruments",
+	"careers", "hobbies", "recipes", "roadtrips", "friendships",
+	"sunsets", "hugs", "sundays",
+];
+
+function getDefaultWeights(): Record<string, number> {
+	const eq = 100 / STAT_KEYS.length;
+	const w: Record<string, number> = {};
+	STAT_KEYS.forEach((k) => { w[k] = eq; });
+	return w;
+}
+
+function loadWeights(): Record<string, number> {
+	try {
+		const stored = localStorage.getItem(WEIGHTS_KEY);
+		if (stored) {
+			const parsed = JSON.parse(stored);
+			// Ensure all keys exist
+			const defaults = getDefaultWeights();
+			for (const key of STAT_KEYS) {
+				if (typeof parsed[key] !== "number") parsed[key] = defaults[key];
+			}
+			return parsed;
+		}
+	} catch { /* ignore */ }
+	return getDefaultWeights();
+}
 
 const LifeInWeeksPage: React.FC = () => {
 	const [dob, setDob] = useState<Date>(() => {
@@ -15,11 +45,17 @@ const LifeInWeeksPage: React.FC = () => {
 	});
 	const [showPhases, setShowPhases] = useState(true);
 	const [showUsefulTime, setShowUsefulTime] = useState(true);
+	const [weights, setWeights] = useState<Record<string, number>>(loadWeights);
 
 	const handleDobSubmit = (date: Date) => {
 		const ym = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
 		localStorage.setItem(STORAGE_KEY, ym);
 		setDob(date);
+	};
+
+	const handleWeightsChange = (newWeights: Record<string, number>) => {
+		setWeights(newWeights);
+		localStorage.setItem(WEIGHTS_KEY, JSON.stringify(newWeights));
 	};
 
 	const storedYm = localStorage.getItem(STORAGE_KEY) || DEFAULT_DOB_YM;
@@ -45,7 +81,13 @@ const LifeInWeeksPage: React.FC = () => {
 
 			{/* Main content */}
 			<div className="flex-1 min-h-0 overflow-hidden">
-				<LifeInWeeksView dob={dob} showPhases={showPhases} showUsefulTime={showUsefulTime} />
+				<LifeInWeeksView
+					dob={dob}
+					showPhases={showPhases}
+					showUsefulTime={showUsefulTime}
+					weights={weights}
+					onWeightsChange={handleWeightsChange}
+				/>
 			</div>
 
 			{/* Handwritten note */}
