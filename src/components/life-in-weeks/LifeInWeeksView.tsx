@@ -89,9 +89,13 @@ const LifeInWeeksView: React.FC<LifeInWeeksViewProps> = ({
 				</div>
 			</div>
 
-			{/* Legend — horizontal, below grid */}
-			<div className="shrink-0">
-				<Legend showPhases={showPhases} showUsefulTime={showUsefulTime} />
+			{/* Legend — centered under grid only */}
+			<div className="flex gap-3 justify-center shrink-0">
+				<div style={{ width: "16px" }} className="shrink-0" />
+				<div style={{ width: gridWidth }} className="flex justify-center">
+					<Legend showPhases={showPhases} showUsefulTime={showUsefulTime} />
+				</div>
+				<div style={{ width: BENTO_WIDTH }} className="shrink-0" />
 			</div>
 		</div>
 	);
