@@ -44,7 +44,7 @@ const TOTAL_YEARS = 90;
 const WEEKS_PER_YEAR = 52;
 const TOTAL_WEEKS = TOTAL_YEARS * WEEKS_PER_YEAR;
 const ADULTHOOD_AGE = 18;
-const RETIREMENT_AGE = 70;
+const RETIREMENT_AGE = 62;
 
 const HOURS_PER_DAY = {
 	sleep: 7,
@@ -70,7 +70,7 @@ export const ACTIVITY_COLORS: Record<ActivityType, string> = {
 	sleep: "#4338CA",
 	commute: "#DC2626",
 	admin: "#D97706",
-	job: "#0EA5E9",
+	job: "#F97316",
 	free: "#FFFFFF",
 };
 
@@ -187,13 +187,15 @@ export function useLifeInWeeks(
 					} else if (activity && activity !== "free") {
 						box.color = ACTIVITY_COLORS[activity];
 					} else {
-						box.color = "#FFFFFF";
+						// Free time: leave blank (dark) when phases are on
+						box.color = dimColor("#FFFFFF", 0.7);
 					}
 				} else if (showPhases) {
 					if (hasPhaseColor) {
 						box.color = LIFE_STAGE_COLORS[box.lifeStage!];
 					} else {
-						box.color = "#FFFFFF";
+						// Adult years: leave blank (dark) when only phases shown
+						box.color = dimColor("#FFFFFF", 0.7);
 					}
 				} else if (showUsefulTime) {
 					if (box.lifeStage === "early-years" || box.lifeStage === "education") {

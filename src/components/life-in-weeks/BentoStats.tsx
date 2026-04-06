@@ -55,7 +55,7 @@ const BentoStats: React.FC<BentoStatsProps> = ({
 		{ key: "sunsets", emoji: "🌅", label: "sunsets to watch", baseValue: remainingWeeks * 7, unit: "1 per day", tooltip: `${(remainingWeeks * 7).toLocaleString()} days` },
 		{ key: "hugs", emoji: "🤗", label: "hugs to give", baseValue: remainingWeeks * 7 * 3, unit: "3 per day", tooltip: `${(remainingWeeks * 7).toLocaleString()} days × 3` },
 		{ key: "sundays", emoji: "🛋️", label: "chill Sundays", baseValue: remainingWeeks, unit: "1 per week", tooltip: `${remainingWeeks.toLocaleString()} weeks` },
-		{ key: "money", emoji: "💰", label: "money to earn", baseValue: totalEarningsPotential, unit: `€ before 70`, tooltip: `${Math.round(workingYearsRemaining)} yrs × €${Math.round(totalEarningsPotential / Math.max(1, workingYearsRemaining * 0.8)).toLocaleString()} × 80%` },
+		{ key: "money", emoji: "💰", label: "money to earn", baseValue: totalEarningsPotential, unit: `€ before 62`, tooltip: `${Math.round(workingYearsRemaining)} yrs × €${Math.round(totalEarningsPotential / Math.max(1, workingYearsRemaining * 0.8)).toLocaleString()} × 80%` },
 	];
 
 	// Only allocatable stats use weights; these always use base value
@@ -107,7 +107,7 @@ const BentoStats: React.FC<BentoStatsProps> = ({
 						>
 							<div className="flex items-baseline gap-1.5">
 								<span className="text-sm">{stat.emoji}</span>
-								<span className="text-2xl font-bold text-white leading-none">
+								<span className="text-3xl font-bold text-white leading-none">
 									{stat.key === "money" ? `€${value.toLocaleString()}` : value.toLocaleString()}
 								</span>
 							</div>
