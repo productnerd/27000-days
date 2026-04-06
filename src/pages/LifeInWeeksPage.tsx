@@ -58,7 +58,15 @@ const LifeInWeeksPage: React.FC = () => {
 	});
 	const [showPhases, setShowPhases] = useState(true);
 	const [showUsefulTime, setShowUsefulTime] = useState(true);
-	const [showJob, setShowJob] = useState(false);
+
+	const handlePhasesChange = (on: boolean) => {
+		if (!on && !showUsefulTime) setShowUsefulTime(true);
+		setShowPhases(on);
+	};
+	const handleUsefulTimeChange = (on: boolean) => {
+		if (!on && !showPhases) setShowPhases(true);
+		setShowUsefulTime(on);
+	};
 	const [weights, setWeights] = useState<Record<string, number>>(loadWeights);
 	const [salary, setSalary] = useState<number>(loadSalary);
 	const [editingSalary, setEditingSalary] = useState(false);
@@ -119,16 +127,12 @@ const LifeInWeeksPage: React.FC = () => {
 				</div>
 				<div className="flex items-center gap-3">
 					<label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer">
-						<Switch checked={showPhases} onCheckedChange={setShowPhases} className="scale-75" />
+						<Switch checked={showPhases} onCheckedChange={handlePhasesChange} className="scale-75" />
 						Life Phases
 					</label>
 					<label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer">
-						<Switch checked={showUsefulTime} onCheckedChange={setShowUsefulTime} className="scale-75" />
+						<Switch checked={showUsefulTime} onCheckedChange={handleUsefulTimeChange} className="scale-75" />
 						Useful Time
-					</label>
-					<label className="flex items-center gap-1.5 text-xs text-muted-foreground cursor-pointer">
-						<Switch checked={showJob} onCheckedChange={setShowJob} className="scale-75" />
-						Job
 					</label>
 				</div>
 			</div>
@@ -139,7 +143,6 @@ const LifeInWeeksPage: React.FC = () => {
 					dob={dob}
 					showPhases={showPhases}
 					showUsefulTime={showUsefulTime}
-					showJob={showJob}
 					salary={salary}
 					weights={weights}
 					onWeightsChange={handleWeightsChange}

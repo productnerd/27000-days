@@ -9,7 +9,6 @@ interface LifeInWeeksViewProps {
 	dob: Date;
 	showPhases: boolean;
 	showUsefulTime: boolean;
-	showJob: boolean;
 	salary: number;
 	weights: Record<string, number>;
 	onWeightsChange: (weights: Record<string, number>) => void;
@@ -29,11 +28,11 @@ const LifeInWeeksView: React.FC<LifeInWeeksViewProps> = ({
 	dob,
 	showPhases,
 	showUsefulTime,
-	showJob,
 	salary,
 	weights,
 	onWeightsChange,
 }) => {
+	const showJob = showUsefulTime;
 	const data = useLifeInWeeks(dob, showPhases, showUsefulTime, showJob, salary);
 
 	const { boxSize, gridHeight, gridWidth } = useMemo(() => {
@@ -100,7 +99,7 @@ const LifeInWeeksView: React.FC<LifeInWeeksViewProps> = ({
 			<div className="flex gap-3 justify-center shrink-0">
 				<div style={{ width: "16px" }} className="shrink-0" />
 				<div style={{ width: gridWidth }} className="flex justify-center">
-					<Legend showPhases={showPhases} showUsefulTime={showUsefulTime} showJob={showJob} />
+					<Legend showPhases={showPhases} showUsefulTime={showUsefulTime} />
 				</div>
 				<div style={{ width: BENTO_WIDTH }} className="shrink-0" />
 			</div>

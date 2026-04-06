@@ -26,13 +26,12 @@ const FREE_ITEM: { type: ActivityType; label: string } = { type: "free", label: 
 interface LegendProps {
 	showPhases: boolean;
 	showUsefulTime: boolean;
-	showJob: boolean;
 }
 
-const Legend: React.FC<LegendProps> = ({ showPhases, showUsefulTime, showJob }) => {
+const Legend: React.FC<LegendProps> = ({ showPhases, showUsefulTime }) => {
 	const activityItems = [
 		...BASE_ACTIVITY_ITEMS,
-		...(showJob ? [JOB_ITEM] : []),
+		JOB_ITEM,
 		FREE_ITEM,
 	];
 
@@ -70,14 +69,6 @@ const Legend: React.FC<LegendProps> = ({ showPhases, showUsefulTime, showJob }) 
 				</div>
 			)}
 
-			{!showPhases && !showUsefulTime && (
-				<div className="flex items-center gap-3 justify-center">
-					<div className="flex items-center gap-1">
-						<div className="w-2 h-2 rounded-[1px] shrink-0 bg-white week-current-legend" />
-						<span className="text-foreground/60">This Week</span>
-					</div>
-				</div>
-			)}
 		</div>
 	);
 };
